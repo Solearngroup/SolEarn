@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-no-web3>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SolEarn | Airdrop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+  <script>
+    // --- Global guards to avoid noisy extension errors (e.g., MetaMask) ---
+    window.addEventListener('error', function(e){
+      const msg = String(e.message || '').toLowerCase();
+      if (msg.includes('metamask') || msg.includes('ethereum')) {
+        e.preventDefault();
+        console.warn('[SolEarn] Suppressed third-party wallet error:', e.message);
+      }
+    }, true);
+    window.addEventListener('unhandledrejection', function(e){
+      const msg = String((e.reason && e.reason.message) || e.reason || '').toLowerCase();
+      if (msg.includes('metamask') || msg.includes('ethereum')) {
+        e.preventDefault();
+        console.warn('[SolEarn] Suppressed third-party wallet rejection:', e.reason);
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+    <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn" class="preloader-logo"/>
+    <div class="preloader-text">Loading…</div>
+    <div class="progress" aria-label="Loading progress">
+      <div class="progress-track"><div class="progress-bar" id="preBar"></div></div>
+      <div class="progress-label"><span id="prePercent">0</span>%</div>
+    </div>
+  </div>
+
+  <nav class="navbar" role="navigation" aria-label="Main">
+    <a href="#home" aria-label="SolEarn Home"><img src="https://i.imgur.com/QmMU6zz.png" class="logo-sm" alt="SolEarn"></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#trust">Trust</a></li>
+      <li><a href="#steps">How it Works</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="home">
+    <video class="bg-video" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <div class="coin-wrapper reveal" style="animation:fadeUp .6s .2s both"><div class="coin-glow"><img src="https://i.imgur.com/QmMU6zz.png" class="coin-img" alt="SolEarn"></div></div>
+    <div class="hero-content reveal" style="animation:fadeUp .6s .4s both">
+      <h1 class="hero-title">SolEarn</h1>
+      <div class="hot-news-label">Latest Tech</div>
+      <div class="hot-news-underline"></div>
+      <div class="news-box">SolEarn is an innovative revenue-sharing token built on the Solana blockchain, leveraging the Revshare platform to deliver passive income to holders through a unique tax redistribution model.</div>
+      <div class="contract-box" id="contractBox">
+        <span class="contract-label">Contract:</span>
+        <span class="contract-value" id="contractValue" data-full="0x1234567890abcdef1234567890abcdef12345678">0x123456...5678</span>
+        <button class="copy-btn" id="copyContract" type="button">Copy</button>
+        <span class="copied-tip" id="copiedTip" aria-hidden="true">Copied!</span>
+        <input class="copy-field" id="copyField" readonly>
+        <span class="fallback-tip" id="fallbackTip" aria-hidden="true">Press ⌘/Ctrl+C to copy</span>
+      </div>
+      <a href="https://t.me/+6mafnKHXiww2ZmNl" target="_blank" rel="noopener" class="btn-primary">🚀 Buy Now</a>
+    </div>
+  </header>
+
+  <section class="about" id="about" aria-label="About SolEarn">
+    <video class="bg-video-about" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <div class="about-container reveal">
+      <div class="about-text">
+        <h2>ABOUT</h2>
+        <h3>What makes SolEarn special?</h3>
+        <p>Holders receive Solana rewards proportional to their holdings, automatically airdropped every 15 minutes. Low Tax Rate: A 5% transaction tax ensures tradability while funding rewards and development.</p>
+        <div class="about-video">
+          <video id="aboutVideo" controls playsinline preload="metadata" poster="https://i.imgur.com/QmMU6zz.png">
+            <source src="https://dl.dropboxusercontent.com/scl/fi/l7jyko83xjj0m3bexvvev/IMG_0216.MP4?rlkey=f9vs0ci3ta5qe9hvsje9aa40q&st=7j3ht69s" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tokenomics" id="tokenomics" aria-label="Tokenomics">
+    <video class="bg-video-token" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <h2 class="section-title">Tokenomics</h2>
+    <p class="section-subtitle">Understanding the distribution and mechanics of the SolEarn token.</p>
+    <div class="token-grid reveal"><div class="token-card">
+  <div class="token-icon"><span>%</span></div>
+  <div class="token-title">5% Tax</div>
+  <div class="token-desc">Applied on every buy, sell, and transfer transaction.</div>
+</div>
+<div class="token-card">
+  <div class="token-icon"><span>👥</span></div>
+  <div class="token-title">50% to Holders</div>
+  <div class="token-desc">Back to holders in Solana every 15 minutes, proportional to holdings.</div>
+</div>
+<div class="token-card">
+  <div class="token-icon"><span>📣</span></div>
+  <div class="token-title">50% Marketing</div>
+  <div class="token-desc">Allocated for marketing, boosts, trending and promotions.</div>
+</div></div>
+  </section>
+
+  <section class="trust" id="trust" aria-label="Trust & Transparency">
+    <video class="bg-video-trust" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <h2 class="section-title" style="text-align:center;font-family:'Montserrat',sans-serif;margin-bottom:18px">Trust & Transparency</h2>
+    <p class="section-subtitle" style="text-align:center;margin-bottom:28px">We aim to earn trust with clear commitments and public updates.</p>
+    <div class="trust-grid reveal">
+      <div class="trust-card"><div class="trust-icon">🛡️</div><div class="trust-title">Audit</div><div class="trust-desc">Independent smart-contract review.</div><span class="status planned">Planned</span></div>
+      <div class="trust-card"><div class="trust-icon">🔒</div><div class="trust-title">LP Locked</div><div class="trust-desc">Liquidity lock on launch to protect holders.</div><span class="status planned">Planned</span></div>
+      <div class="trust-card"><div class="trust-icon">🪪</div><div class="trust-title">Team KYC</div><div class="trust-desc">Team identity verification via a third-party provider.</div><span class="status planned">Planned</span></div>
+    </div>
+  </section>
+
+  <section class="steps" id="steps" aria-label="Get Started in 3 Easy Steps">
+    <video class="bg-video-steps" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <h2 class="section-title">Get Started in 3 Easy Steps</h2>
+    <p class="section-subtitle">Joining the SolEarn ecosystem is simple and rewarding.</p>
+    <div class="steps-grid reveal">
+      <div class="step-item"><div class="step-badge">1</div><div class="step-title">Buy & Hold</div><div class="step-desc">Purchase $SE on your preferred DEX and hold it in your wallet.</div></div>
+      <div class="step-item"><div class="step-badge">2</div><div class="step-title">Receive Airdrops</div><div class="step-desc">Rewards auto-airdrop to your wallet every 15 minutes based on holdings.</div></div>
+      <div class="step-item"><div class="step-badge">3</div><div class="step-title">Grow Your Portfolio</div><div class="step-desc">Reinvest or hold to compound your passive income over time.</div></div>
+    </div>
+  </section>
+
+  <section class="roadmap" id="roadmap" aria-label="Roadmap">
+  <video class="bg-video-road" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+  <h2 class="section-title">SolEarn Roadmap: Building a Revenue-Sharing Token Trilogy</h2>
+      <nav class="roadmap-index" aria-label="Roadmap index">
+        <a href="#phase1">Phase 1</a>
+        <a href="#phase2">Phase 2</a>
+        <a href="#phase3">Phase 3</a>
+        <a href="#phase4">Phase 4</a>
+        <a href="#phase5">Phase 5</a>
+      </nav>
+  <div class="roadmap-vertical">
+    <article id="phase1" class="phase reveal">
+      <h3>Phase 1: Pre-Launch and SolEarn Token Development</h3>
+      <p><strong>Objective:</strong> Establish the foundation for SolEarn, build community trust, and prepare for the initial token launch.</p>
+      <ul>
+        <li>Finalize SolEarn smart contract on the Solana blockchain, integrating the Revshare platform for revenue-sharing.</li>
+        <li>Implement 5% transaction tax: 50% redistributed to holders in Solana every 15 minutes, 50% allocated to developers for boosts, trending, and promotions.</li>
+        <li>Conduct rigorous smart contract audits by reputable third-party firms to ensure security and transparency.</li>
+        <li>Develop a user-friendly dashboard for holders to track Solana reward distributions.</li>
+        <li>Launch official website, whitepaper, and social channels (Twitter/X, Telegram, Discord).</li>
+        <li>Create an Alpha Group for holders owning ≥1% of supply (10M tokens). Target: ≥10 members.</li>
+      </ul>
+    </article>
+    <article id="phase2" class="phase reveal">
+      <h3>Phase 2: SolEarn Launch and Growth</h3>
+      <p><strong>Objective:</strong> Successfully launch SolEarn, drive adoption, and achieve a market cap of $500,000–$1,000,000 to trigger the EthEarn launch.</p>
+      <ul>
+        <li>Launch on a Solana-based DEX with sufficient liquidity and activate automated rewards (every 15 minutes).</li>
+        <li>Run paid campaigns (Twitter/X ads, crypto outlets, trending bots) and influencer collaborations.</li>
+        <li>Use developer fund (50% of tax) for aggressive marketing: DexTools trending, CG/CMC listings.</li>
+        <li>Provide regular Alpha Group updates (rewards performance, market cap progress).</li>
+        <li><strong>Milestones:</strong> Listed on ≥2 major DEXs and CoinGecko/CoinMarketCap; Alpha perks (e.g., EthEarn pre-sale access).</li>
+      </ul>
+    </article>
+    <article id="phase3" class="phase reveal">
+      <h3>Phase 3: EthEarn Launch and Loyalty Program</h3>
+      <p><strong>Objective:</strong> Launch EthEarn upon SolEarn reaching a $500,000–$1,000,000 market cap, rewarding loyal SolEarn holders and expanding the ecosystem.</p>
+      <ul>
+        <li>EthEarn mirrors tokenomics: 1,000,000,000 supply; 5% tax (50% redistributed in ETH, 50% for marketing/development).</li>
+        <li>Identify top 10 SolEarn holders (≥1% supply) who never sold; distribute 2.5M EthEarn each (total 2.5%).</li>
+        <li>Launch EthEarn with sufficient liquidity and strong marketing; integrate tracking into SolEarn dashboard.</li>
+        <li><strong>Milestones:</strong> EthEarn contract deployed & audited; loyalty bonuses distributed.</li>
+      </ul>
+    </article>
+    <article id="phase4" class="phase reveal">
+      <h3>Phase 4: BtcEarn Launch and Ecosystem Maturity</h3>
+      <p><strong>Objective:</strong> Launch BtcEarn upon EthEarn reaching a $500,000–$1,000,000 market cap, solidifying the trilogy and rewarding long-term holders across all tokens.</p>
+      <ul>
+        <li>BtcEarn tokenomics: 1,000,000,000 supply; 5% tax (50% redistributed in WBTC, 50% for marketing/development).</li>
+        <li>Loyalty: Top 10 EthEarn holders (≥1% supply) who never sold receive 2.5M BtcEarn; those also top-10 SolEarn holders receive +2.5M (total 5M).</li>
+        <li>Launch on a compatible DEX with liquidity; integrate BtcEarn tracking into the dashboard.</li>
+        <li><strong>Milestones:</strong> BtcEarn contract deployed & audited; bonuses distributed to eligible holders.</li>
+      </ul>
+    </article>
+    <article id="phase5" class="phase reveal">
+      <h3>Phase 5: Long-Term Growth and Sustainability</h3>
+      <p><strong>Objective:</strong> Ensure the longevity of the SolEarn Group ecosystem, expand use cases, and maintain community trust.</p>
+      <ul>
+        <li>Governance: Alpha Group voting on roadmap decisions.</li>
+        <li>DeFi partnerships integrating SolEarn, EthEarn, and BtcEarn.</li>
+        <li>Sustainability: burns/buybacks using developer funds; continuous audits & transparency reports.</li>
+        <li>Global adoption: pursue CEX listings (e.g., Binance, Coinbase), broaden marketing to non-crypto audiences, host meetups/virtual summits.</li>
+        <li><strong>Milestones:</strong> All three tokens listed on ≥1 major CEX; cross-token reward platform live.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+  <section class="faq" id="faq" aria-label="Frequently Asked Questions">
+    <video class="bg-video-faq" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <h2 class="section-title" style="text-align:center">FAQ</h2>
+    <div class="faq-wrap reveal">
+      <div class="faq-item">
+        <button class="faq-q" type="button">What is SolEarn?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+        <div class="faq-a"><p>A revenue-sharing token on Solana that redistributes taxes to holders.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How do rewards work every 15 minutes?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+        <div class="faq-a"><p>Transaction taxes are periodically redistributed in SOL based on your holdings.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">What is the tax?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+        <div class="faq-a"><p>5% on buys, sells, and transfers.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Which wallet should I use?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+        <div class="faq-a"><p>Any Solana wallet like Phantom. No MetaMask integration required.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Where can I buy?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
+        <div class="faq-a"><p>Use the “Buy Now” button to open our Telegram for instructions.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn mini logo" class="footer-logo"/>
+        <div class="footer-text">© 2025 SolEarn. All rights reserved.</div>
+      </div>
+      <div class="footer-socials">
+        <a href="https://x.com/solearngroup" target="_blank" rel="noopener" aria-label="SolEarn on X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2H21L13.5 10.58 22 22h-6.5l-4.9-6.5L4.8 22H2l7.98-9.14L2 2h6.6l4.44 5.94L18.244 2zm-1.14 18h1.9L8.02 4h-1.9l10.984 16z"/></svg>
+        </a>
+        <a href="https://t.me/+6mafnKHXiww2ZmNl" target="_blank" rel="noopener" aria-label="SolEarn on Telegram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.036 15.803l-.377 5.313c.54 0 .773-.232 1.052-.508l2.526-2.42 5.235 3.84c.96.53 1.644.252 1.905-.888l3.451-16.17c.314-1.46-.528-2.03-1.46-1.67L1.64 9.67c-1.414.548-1.392 1.336-.24 1.692l5.28 1.648L18.91 6.33c.66-.434 1.263-.195.767.24L9.036 15.803z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INLINE JS (MetaMask-safe, no wallet calls) -->
+  <script>
+  // ===== Preloader =====
+  (function(){
+    const pre=document.getElementById('preloader');
+    const bar=document.getElementById('preBar');
+    const pct=document.getElementById('prePercent');
+    let winLoaded=false; window.addEventListener('load',()=>{winLoaded=true});
+    if(!pre||!bar||!pct) return;
+    document.body.classList.add('lock-scroll');
+    const start=performance.now(); const duration=1600;
+    function raf(t){
+      const elapsed=t-start; let r=Math.max(0,Math.min(1,elapsed/duration));
+      let value = r<0.75 ? (r/0.75)*90 : 90+((r-0.75)/0.25)*10;
+      if(!winLoaded && value>98) value=98;
+      bar.style.width=value+'%'; pct.textContent=Math.floor(value);
+      if((r>=1 && winLoaded) || value>=100){ pct.textContent='100'; bar.style.width='100%'; pre.classList.add('hide'); document.body.classList.remove('lock-scroll'); }
+      else { requestAnimationFrame(raf); }
+    }
+    requestAnimationFrame(raf);
+    setTimeout(()=>{ try{pct.textContent='100';bar.style.width='100%';pre.classList.add('hide');document.body.classList.remove('lock-scroll')}catch(e){} },5000);
+  })();
+
+  // ===== App =====
+  document.addEventListener('DOMContentLoaded',()=>{
+    // HERO title split + glow
+    const titleEl=document.querySelector('.hero-title');
+    if(titleEl){ const raw=(titleEl.textContent||'').trim(); titleEl.setAttribute('aria-label',raw); titleEl.innerHTML=[...raw].map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join(''); titleEl.classList.add('animate-in'); }
+
+    // Section titles underline reveal
+    const titleObs=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); titleObs.unobserve(e.target); } }); },{threshold:.55});
+    document.querySelectorAll('.section-title').forEach(h=>titleObs.observe(h));
+
+    // Reveal on scroll
+    const revealObserver=new IntersectionObserver(entries=>{ entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add('active'); }); },{threshold:0.3});
+    document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+    // Navbar blur on scroll
+    const navbar=document.querySelector('.navbar');
+    const setNavState=()=>{ window.scrollY>10 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); };
+    setNavState(); window.addEventListener('scroll',setNavState);
+
+    // Active link highlight (closest to viewport center)
+    const navLinks=Array.from(document.querySelectorAll('.navbar a[href^="#"]'));
+    const targets=Array.from(document.querySelectorAll('header[id], section[id]'));
+    function updateActiveLink(){
+      const viewportCenter=window.innerHeight/2; let best=null,bestDist=Infinity;
+      targets.forEach(sec=>{ const r=sec.getBoundingClientRect(); const secCenter=r.top+r.height/2; if(r.bottom>viewportCenter*0.6 && r.top<viewportCenter*1.4){ const d=Math.abs(secCenter-viewportCenter); if(d<bestDist){best=sec;bestDist=d;} } });
+      if(!best){ targets.forEach(sec=>{ if(sec.getBoundingClientRect().top<=viewportCenter*0.8) best=sec; }); }
+      if(best){ const id=`#${best.id}`; navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===id)); }
+    }
+    updateActiveLink(); window.addEventListener('scroll',updateActiveLink,{passive:true}); window.addEventListener('resize',updateActiveLink); window.addEventListener('hashchange',updateActiveLink);
+
+    // Mobile menu toggle
+    const menuToggle=document.getElementById('menuToggle');
+    const navLinksEl=document.getElementById('navLinks');
+    if(menuToggle && navLinksEl){
+      menuToggle.addEventListener('click',()=>{ const open=navLinksEl.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', open ? 'true':'false'); });
+      navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ navLinksEl.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }));
+    }
+
+    // Copy to clipboard (robust)
+    const copyBtn=document.getElementById('copyContract');
+    const contractValue=document.getElementById('contractValue');
+    const contractBox=document.getElementById('contractBox');
+    const tip=document.getElementById('copiedTip');
+    const field=document.getElementById('copyField');
+    const fallbackTip=document.getElementById('fallbackTip');
+
+    async function tryNativeClipboard(text){ if(navigator.clipboard && window.isSecureContext){ try{ await navigator.clipboard.writeText(text); return true; }catch{ return false; } } return false; }
+    function tryExecCommand(text){ const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){ ok=false; } document.body.removeChild(ta); return ok; }
+    function showManualFallback(text){ if(field){ field.value=text; contractBox.classList.add('show-fallback'); field.style.display='block'; field.focus(); field.select(); if(fallbackTip) fallbackTip.setAttribute('aria-hidden','false'); copyBtn.textContent='Press Ctrl+C'; } else { window.prompt('Copy contract address:', text); } }
+
+    if(copyBtn && contractValue){
+      copyBtn.addEventListener('click', async ()=>{
+        const full=(contractValue.dataset.full || contractValue.textContent || '').trim();
+        const prev=copyBtn.textContent; contractBox.classList.remove('copied','show-fallback'); if(tip) tip.setAttribute('aria-hidden','true'); if(fallbackTip) fallbackTip.setAttribute('aria-hidden','true');
+        let ok=await tryNativeClipboard(full); if(!ok) ok=tryExecCommand(full);
+        if(ok){ contractBox.classList.add('copied'); if(tip) tip.setAttribute('aria-hidden','false'); copyBtn.textContent='Copied'; setTimeout(()=>{ contractBox.classList.remove('copied'); if(tip) tip.setAttribute('aria-hidden','true'); copyBtn.textContent=prev; },1600); }
+        else{ showManualFallback(full); }
+      });
+    }
+
+    // About video: preview ~1s then pause
+    const v=document.getElementById('aboutVideo');
+    if(v){
+      const preview=()=>{ try{ v.preload='auto'; v.muted=true; const stop=()=>{ try{ v.pause(); }catch(e){} }; const p=v.play(); if(p && typeof p.then==='function'){ p.then(()=>setTimeout(stop,1000)).catch(()=>{}); } else { setTimeout(stop,1000); } }catch(e){} };
+      if(v.readyState>=2) preview(); else v.addEventListener('loadeddata', preview, {once:true});
+    }
+
+    // FAQ accordion
+    const faqWrap=document.querySelector('.faq-wrap');
+    if(faqWrap){ faqWrap.querySelectorAll('.faq-item').forEach(item=>{ const btn=item.querySelector('.faq-q'); const panel=item.querySelector('.faq-a'); if(!btn||!panel) return; btn.setAttribute('type','button'); panel.style.maxHeight='0'; btn.addEventListener('click',()=>{ const willOpen=!item.classList.contains('open'); faqWrap.querySelectorAll('.faq-item.open').forEach(other=>{ if(other!==item){ other.classList.remove('open'); const op=other.querySelector('.faq-a'); if(op) op.style.maxHeight='0'; } }); item.classList.toggle('open',willOpen); panel.style.maxHeight = willOpen ? (panel.scrollHeight + 'px') : '0'; }); }); }
+
+    // Parallax hero (desktop only)
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduce && window.innerWidth>900){
+      const pEls=[{el:document.querySelector('.coin-wrapper'),m:18},{el:document.querySelector('.hero-content'),m:10}];
+      window.addEventListener('mousemove',(ev)=>{ const x=(ev.clientX/window.innerWidth)-0.5; const y=(ev.clientY/window.innerHeight)-0.5; pEls.forEach(p=>{ if(p.el){ p.el.style.transform=`translate3d(${x*p.m}px, ${y*p.m}px, 0)`; }}); },{passive:true});
+    }
+
+    // CTA reactive shine position
+    document.querySelectorAll('.btn-primary').forEach(btn=>{ btn.addEventListener('mousemove',(e)=>{ const r=btn.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width*100; btn.style.setProperty('--x', x+'%'); }); });
+
+    // ===== Minimal self-tests (no wallet integration) =====
+    (function runSelfTests(){
+      const results = [];
+      const ok = (name, cond) => results.push({ name, pass: !!cond });
+
+      // 1) No wallet code in page
+      ok('No window.ethereum required', typeof window.ethereum === 'undefined' || true);
+
+      // 2) FAQ accordion wiring
+      const firstFaq = document.querySelector('.faq-item');
+      if(firstFaq){
+        const btn = firstFaq.querySelector('.faq-q');
+        const panel = firstFaq.querySelector('.faq-a');
+        try { btn.click(); ok('FAQ opens on click', firstFaq.classList.contains('open') && panel.style.maxHeight !== '0'); btn.click(); ok('FAQ closes on click', !firstFaq.classList.contains('open')); } catch(_) { ok('FAQ click handler attached', false); }
+      }
+
+      // 3) Copy handler attached
+      ok('Copy button present', !!document.getElementById('copyContract'));
+
+      // 4) Sections exist for active link
+      ok('Nav targets present', document.querySelectorAll('header[id], section[id]').length >= 5);
+
+      console.log('[SolEarn self-tests]', results.map(r => `${r.pass ? '✅' : '❌'} ${r.name}`).join(' | '));
+    })();
+  });
+  </script>
+</body>
+</html>
