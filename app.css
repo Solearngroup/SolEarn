@@ -226,3 +226,46 @@ section{padding:90px 6vw;scroll-margin-top:90px}
 @media(max-width:900px){
   .pdf-embed embed,.pdf-embed iframe{height:70vh}
 }
+
+
+/* === Market (Live Stats) Section === */
+.market{position:relative;overflow:hidden;text-align:center;padding:100px 6vw}
+.market video.bg-video-market{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.market::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.7);z-index:-1}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1100px;margin:14px auto 0}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.stat-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:6px;color:#ffae42}
+.stat-value{font-size:1.8rem;font-weight:700;margin-bottom:6px}
+.stat-delta{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-weight:700;font-size:.95rem;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+.stat-delta.up{color:#88f0a3;border-color:rgba(136,240,163,.4);background:rgba(136,240,163,.08)}
+.stat-delta.down{color:#ff9ca0;border-color:rgba(255,156,160,.35);background:rgba(255,156,160,.08)}
+.stat-delta::before{content:attr(data-title);font-weight:600;opacity:.65;margin-right:6px}
+.stat-footnote{max-width:900px;margin:12px auto 0;color:#cbd2dc;font-size:.9rem;opacity:.85}
+@media(max-width:900px){.stat-grid{grid-template-columns:1fr}}
+
+
+/* Status colors */
+.status.done, .badge.done{color:#88f0a3;border-color:rgba(136,240,163,.4);background:rgba(136,240,163,.08)}
+
+
+/* Candlestick chart embed (responsive, wider) */
+.candles-embed{
+  width: min(94vw, 1400px);
+  max-width: 1400px;
+  margin: 28px auto 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  aspect-ratio: 16 / 9;
+}
+.candles-embed iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+}
+@media (max-width: 900px){
+  .candles-embed{ width: min(96vw, 100%); aspect-ratio: 16 / 10; }
+}
