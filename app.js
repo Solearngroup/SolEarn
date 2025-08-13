@@ -101,4 +101,70 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // CTA reactive shine position
   document.querySelectorAll('.btn-primary').forEach(btn=>{ btn.addEventListener('mousemove',(e)=>{ const r=btn.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width*100; btn.style.setProperty('--x', x+'%'); }); });
+  // ===== Live Stats (DexScreener) =====
+  (function initLiveStats(){
+    const PAIR = 'E56jizCu8qZfkX5QkZHTrLs4aYCyBnzuX13ckvyUS2zd'; // Solana pair ID
+    const URL = `https://api.dexscreener.com/latest/dex/pairs/solana/${PAIR}`;
+
+    const $ = (id)=>document.getElementById(id);
+    const elPrice=$('statPrice'), elPriceChg=$('statPriceChg');
+    const elMcap=$('statMcap'), elMcapChg=$('statMcapChg');
+    const elVol=$('statVol'), elVolChg=$('statVolChg');
+
+    function fmtUsd(n){
+      if(n==null || isNaN(n)) return '—';
+      const v = Number(n);
+      if(v >= 1e9) return '$'+(v/1e9).toFixed(2)+'B';
+      if(v >= 1e6) return '$'+(v/1e6).toFixed(2)+'M';
+      if(v >= 1e3) return '$'+(v/1e3).toFixed(2)+'K';
+      if(v >= 1) return '$'+v.toFixed(4);
+      return '$'+v.toFixed(8).replace(/0+$/,'').replace(/\.$/,'');
+    }
+    function fmtPct(p){
+      if(p==null || isNaN(p)) return '—';
+      return (p>=0?'+':'') + Number(p).toFixed(2) + '%';
+    }
+    function setDelta(el, pct){
+      if(!el) return;
+      el.classList.remove('up','down');
+      if(pct==null || isNaN(pct)){ el.textContent='—'; return; }
+      el.textContent = fmtPct(pct);
+      el.classList.add(pct>=0?'up':'down');
+    }
+
+    async function tick(){
+      try{
+        const res = await fetch(URL, { cache:'no-store' });
+        const data = await res.json();
+        const p = data && data.pairs && data.pairs[0];
+        if(!p) return;
+
+        const price = p.priceUsd ? parseFloat(p.priceUsd) : null;
+        const priceChg = p.priceChange && (p.priceChange.h24 ?? p.priceChange.h6 ?? p.priceChange.h1 ?? p.priceChange.m5);
+        const mcap = p.marketCap ?? null;
+        const vol24 = p.volume && (p.volume.h24 ?? null);
+        const vol6 = p.volume && (p.volume.h6 ?? null);
+
+        if(elPrice) elPrice.textContent = price!=null ? (price>=1? '$'+price.toFixed(6): '$'+price.toFixed(10).replace(/0+$/,'').replace(/\.$/,'')) : '—';
+        if(elPriceChg) setDelta(elPriceChg, priceChg);
+
+        if(elMcap) elMcap.textContent = fmtUsd(mcap);
+        if(elMcapChg) setDelta(elMcapChg, priceChg); // Approximate
+
+        if(elVol) elVol.textContent = fmtUsd(vol24);
+        let volPct = null;
+        if(vol24!=null && vol6!=null && vol6>0){
+          const base = vol6*4;
+          volPct = ((vol24 - base) / base) * 100;
+        }
+        if(elVolChg) setDelta(elVolChg, volPct);
+      }catch(e){
+        console.warn('[SolEarn] Live stats error', e);
+      }
+    }
+
+    tick();
+    setInterval(tick, 30000);
+  })();
+
 });
