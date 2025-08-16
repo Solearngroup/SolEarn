@@ -1,7 +1,5 @@
-/* SolEarn app.js — single source of truth (migrated from broken inline script) */
-
-// Preloader neon progress
-(function(){
+/* SolEarn v2 — app.js */
+(function(){ // Preloader progress
   const pre=document.getElementById('preloader');
   const bar=document.getElementById('preBar');
   const pct=document.getElementById('prePercent');
@@ -23,24 +21,31 @@
 
 // DOM Ready
 document.addEventListener('DOMContentLoaded',()=>{
-  // HERO title split + glow
+  // HERO title split animation
   const titleEl=document.querySelector('.hero-title');
-  if(titleEl){ const raw=(titleEl.textContent||'').trim(); titleEl.setAttribute('aria-label',raw); titleEl.innerHTML=[...raw].map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join(''); titleEl.classList.add('animate-in'); }
+  if(titleEl){
+    const raw=(titleEl.textContent||'').trim();
+    titleEl.setAttribute('aria-label',raw);
+    titleEl.innerHTML=[...raw].map((ch,i)=>`<span style="animation-delay:${80+i*70}ms">${ch}</span>`).join('');
+  }
 
-  // Section titles underline reveal
-  const titleObs=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); titleObs.unobserve(e.target); } }); },{threshold:.55});
+  // Section title underline reveal
+  const titleObs=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); titleObs.unobserve(e.target); } });
+  },{threshold:.55});
   document.querySelectorAll('.section-title').forEach(h=>titleObs.observe(h));
 
   // Reveal on scroll
-  const revealObserver=new IntersectionObserver(entries=>{ entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add('active'); }); },{threshold:0.3});
-  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+  const revealObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add('active'); });
+  },{threshold:0.3});
+  document.querySelectorAll('.reveal, .roadmap-vertical .phase').forEach(el=>revealObserver.observe(el));
 
-  // Navbar blur on scroll
+  // Navbar blur on scroll & active link
   const navbar=document.querySelector('.navbar');
-  const setNavState=()=>{ window.scrollY>10 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); };
+  const setNavState=()=>{ if(!navbar) return; window.scrollY>10 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); };
   setNavState(); window.addEventListener('scroll',setNavState);
 
-  // Active link highlight (closest to viewport center)
   const navLinks=Array.from(document.querySelectorAll('.navbar a[href^="#"]'));
   const targets=Array.from(document.querySelectorAll('header[id], section[id]'));
   function updateActiveLink(){
@@ -55,11 +60,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   const menuToggle=document.getElementById('menuToggle');
   const navLinksEl=document.getElementById('navLinks');
   if(menuToggle && navLinksEl){
-    menuToggle.addEventListener('click',()=>{ const open=navLinksEl.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', open ? 'true':'false'); });
-    navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ navLinksEl.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }));
+    menuToggle.addEventListener('click',()=>{
+      const open=navLinksEl.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', open ? 'true':'false');
+    });
+    navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      navLinksEl.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false');
+    }));
   }
 
-  // Copy to clipboard (robust)
+  // Copy to clipboard
   const copyBtn=document.getElementById('copyContract');
   const contractValue=document.getElementById('contractValue');
   const contractBox=document.getElementById('contractBox');
@@ -81,7 +91,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  // About video: preview ~1s then pause
+  // About video auto-preview ~1s
   const v=document.getElementById('aboutVideo');
   if(v){
     const preview=()=>{ try{ v.preload='auto'; v.muted=true; const stop=()=>{ try{ v.pause(); }catch(e){} }; const p=v.play(); if(p && typeof p.then==='function'){ p.then(()=>setTimeout(stop,1000)).catch(()=>{}); } else { setTimeout(stop,1000); } }catch(e){} };
@@ -90,17 +100,16 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // FAQ accordion
   const faqWrap=document.querySelector('.faq-wrap');
-  if(faqWrap){ faqWrap.querySelectorAll('.faq-item').forEach(item=>{ const btn=item.querySelector('.faq-q'); const panel=item.querySelector('.faq-a'); if(!btn||!panel) return; btn.setAttribute('type','button'); panel.style.maxHeight='0'; btn.addEventListener('click',()=>{ const willOpen=!item.classList.contains('open'); faqWrap.querySelectorAll('.faq-item.open').forEach(other=>{ if(other!==item){ other.classList.remove('open'); const op=other.querySelector('.faq-a'); if(op) op.style.maxHeight='0'; } }); item.classList.toggle('open',willOpen); panel.style.maxHeight = willOpen ? (panel.scrollHeight + 'px') : '0'; }); }); }
+  if(faqWrap){ faqWrap.querySelectorAll('.faq-item').forEach(item=>{
+    const btn=item.querySelector('.faq-q'); const panel=item.querySelector('.faq-a'); if(!btn||!panel) return;
+    btn.setAttribute('type','button'); panel.style.maxHeight='0';
+    btn.addEventListener('click',()=>{
+      const willOpen=!item.classList.contains('open');
+      faqWrap.querySelectorAll('.faq-item.open').forEach(other=>{ if(other!==item){ other.classList.remove('open'); const op=other.querySelector('.faq-a'); if(op) op.style.maxHeight='0'; } });
+      item.classList.toggle('open',willOpen); panel.style.maxHeight = willOpen ? (panel.scrollHeight + 'px') : '0';
+    });
+  }); }
 
-  // Parallax hero (desktop only)
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce && window.innerWidth>900){
-    const pEls=[{el:document.querySelector('.coin-wrapper'),m:18},{el:document.querySelector('.hero-content'),m:10}];
-    window.addEventListener('mousemove',(ev)=>{ const x=(ev.clientX/window.innerWidth)-0.5; const y=(ev.clientY/window.innerHeight)-0.5; pEls.forEach(p=>{ if(p.el){ p.el.style.transform=`translate3d(${x*p.m}px, ${y*p.m}px, 0)`; }}); },{passive:true});
-  }
-
-  // CTA reactive shine position
-  document.querySelectorAll('.btn-primary').forEach(btn=>{ btn.addEventListener('mousemove',(e)=>{ const r=btn.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width*100; btn.style.setProperty('--x', x+'%'); }); });
   // ===== Live Stats (DexScreener) =====
   (function initLiveStats(){
     const PAIR = 'E56jizCu8qZfkX5QkZHTrLs4aYCyBnzuX13ckvyUS2zd'; // Solana pair ID
@@ -149,22 +158,37 @@ document.addEventListener('DOMContentLoaded',()=>{
         if(elPriceChg) setDelta(elPriceChg, priceChg);
 
         if(elMcap) elMcap.textContent = fmtUsd(mcap);
-        if(elMcapChg) setDelta(elMcapChg, priceChg); // Approximate
+        if(elMcapChg) setDelta(elMcapChg, priceChg); // approx
 
         if(elVol) elVol.textContent = fmtUsd(vol24);
         let volPct = null;
-        if(vol24!=null && vol6!=null && vol6>0){
-          const base = vol6*4;
-          volPct = ((vol24 - base) / base) * 100;
-        }
+        if(vol24!=null && vol6!=null && vol6>0){ volPct = ((vol24 - vol6)/vol6)*100; }
         if(elVolChg) setDelta(elVolChg, volPct);
-      }catch(e){
-        console.warn('[SolEarn] Live stats error', e);
-      }
+      }catch(e){ /* silent */ }
     }
-
     tick();
-    setInterval(tick, 30000);
+    setInterval(tick, 30000); // 30s
   })();
+
+  // CTA shine follow
+  document.querySelectorAll('.btn-primary').forEach(btn=>{
+    btn.addEventListener('mousemove',(e)=>{
+      const r=btn.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width*100; btn.style.setProperty('--x', x+'%');
+    });
+  });
+
+  // Year
+  const y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
+
+
+  // Swap phone iframe fallback if blocked by X-Frame-Options
+  document.querySelectorAll('.swap-phone .phone').forEach(ph=>{
+    const iframe=ph.querySelector('iframe');
+    if(!iframe) return;
+    let done=false;
+    const show=()=>{ if(done) return; done=true; ph.classList.add('error'); };
+    const timer=setTimeout(show, 4000);
+    iframe.addEventListener('load',()=>{ clearTimeout(timer); });
+  });
 
 });

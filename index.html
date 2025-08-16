@@ -3,31 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SolEarn | Airdrop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+  <title>SolEarn — Passive SOL Rewards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
   <script>
-    // --- Global guards to avoid noisy extension errors (e.g., MetaMask) ---
+    // Prevent noisy wallet extension errors
     window.addEventListener('error', function(e){
       const msg = String(e.message || '').toLowerCase();
-      if (msg.includes('metamask') || msg.includes('ethereum')) {
-        e.preventDefault();
-        console.warn('[SolEarn] Suppressed third-party wallet error:', e.message);
-      }
+      if (msg.includes('metamask') || msg.includes('ethereum')) { e.preventDefault(); }
     }, true);
     window.addEventListener('unhandledrejection', function(e){
       const msg = String((e.reason && e.reason.message) || e.reason || '').toLowerCase();
-      if (msg.includes('metamask') || msg.includes('ethereum')) {
-        e.preventDefault();
-        console.warn('[SolEarn] Suppressed third-party wallet rejection:', e.reason);
-      }
+      if (msg.includes('metamask') || msg.includes('ethereum')) { e.preventDefault(); }
     });
   </script>
 </head>
 <body>
   <!-- Preloader -->
   <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
-    <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn" class="preloader-logo"/>
+    <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn logo" class="preloader-logo"/>
     <div class="preloader-text">Loading…</div>
     <div class="progress" aria-label="Loading progress">
       <div class="progress-track"><div class="progress-bar" id="preBar"></div></div>
@@ -35,6 +30,7 @@
     </div>
   </div>
 
+  <!-- Top Nav -->
   <nav class="navbar" role="navigation" aria-label="Main">
     <a href="#home" aria-label="SolEarn Home"><img src="https://i.imgur.com/QmMU6zz.png" class="logo-sm" alt="SolEarn"></a>
     <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -46,271 +42,282 @@
       <li><a href="#trust">Trust</a></li>
       <li><a href="#steps">How it Works</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#whitepaper">Whitepaper</a></li>
       <li><a href="#faq">FAQ</a></li>
-    
-      <li><a href="#whitepaper">Whitepaper</a></li></ul>
+    </ul>
   </nav>
 
+  <!-- HERO -->
   <header class="hero" id="home">
-    <video class="bg-video" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-    <div class="coin-wrapper reveal" style="animation:fadeUp .6s .2s both"><div class="coin-glow"><img src="https://i.imgur.com/QmMU6zz.png" class="coin-img" alt="SolEarn"></div></div>
-    <div class="hero-content reveal" style="animation:fadeUp .6s .4s both">
+    <div class="bg-gradient"></div>
+    <div class="coin-wrapper reveal" style="animation:fadeUp .6s .2s both">
+      <div class="coin-glow"><img src="https://i.imgur.com/QmMU6zz.png" class="coin-img" alt="SolEarn coin"></div>
+    </div>
+    <div class="hero-content reveal" style="animation:fadeUp .6s .35s both">
       <h1 class="hero-title">SolEarn</h1>
-      <div class="hot-news-label">Latest Tech</div>
-      <div class="hot-news-underline"></div>
-      <div class="news-box">SolEarn is an innovative revenue-sharing token built on the Solana blockchain, leveraging the Revshare platform to deliver passive income to holders through a unique tax redistribution model.</div>
+      <p class="hero-sub">Revenue‑sharing on Solana. Automatic SOL airdrops every 15 minutes.</p>
+
       <div class="contract-box" id="contractBox">
         <span class="contract-label">Contract:</span>
-        <span class="contract-value" id="contractValue" data-full="5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ CONTRACT">5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ </span>
+        <span class="contract-value" id="contractValue" data-full="5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ">5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ</span>
         <button class="copy-btn" id="copyContract" type="button">Copy</button>
         <span class="copied-tip" id="copiedTip" aria-hidden="true">Copied!</span>
         <input class="copy-field" id="copyField" readonly>
         <span class="fallback-tip" id="fallbackTip" aria-hidden="true">Press ⌘/Ctrl+C to copy</span>
       </div>
-      <a href="https://dexscreener.com/solana/e56jizcu8qzfkx5qkzhtrls4aycybnzux13ckvyus2zd" target="_blank" rel="noopener" class="btn-primary">🚀 Buy Now</a>
+
+      <div class="cta-row">
+        <a href="https://dexscreener.com/solana/e56jizcu8qzfkx5qkzhtrls4aycybnzux13ckvyus2zd" target="_blank" rel="noopener" class="btn-primary">🚀 Buy on DexScreener</a>
+        <a href="#stats" class="btn-secondary">📊 Live Stats</a>
+      </div>
+      <!-- SWAP PHONE -->
+      <div class="swap-phone reveal" style="animation:fadeUp .6s .5s both">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <iframe
+            title="Raydium Swap — $SE"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://raydium.io/swap/?inputMint=sol&outputMint=5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ">
+          </iframe>
+          <div class="phone-fallback">
+            <p>Se l’embed è bloccato dal browser, apri lo swap direttamente su Raydium.</p>
+            <a class="btn-primary" target="_blank" rel="noopener"
+               href="https://raydium.io/swap/?inputMint=sol&outputMint=5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ">Apri Raydium</a>
+          </div>
+                <div class="swap-hint">
+          <span>Problemi a visualizzare lo swap?</span>
+          <a target="_blank" rel="noopener"
+             href="https://raydium.io/swap/?inputMint=sol&outputMint=5xLE19xaTWek8pviTcUPF9qkdWxfo2hrEUshM85GtsoZ">Apri Raydium</a>
+        </div>
+      </div>
+
     </div>
   </header>
 
-  
-  <!-- === Audit Proof Section === -->
+  <!-- AUDIT -->
   <section class="audit" id="audit" aria-label="Smart Contract Audit Proof">
-    <video class="bg-video-audit" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <div class="bg-grid"></div>
     <h2 class="section-title">Audit &amp; Security Proof</h2>
-    <p class="section-subtitle">Independent smart-contract audit — proof of completion. Click to view the full certificate.</p>
+    <p class="section-subtitle">Independent smart‑contract audit — click to view the certificate.</p>
     <div class="audit-grid reveal">
-      <a class="audit-proof" href="https://i.imgur.com/gnbdcpO.jpeg" target="_blank" rel="noopener" aria-label="Open full audit certificate image">
-        <img class="audit-image" src="https://i.imgur.com/gnbdcpO.jpeg" alt="SolEarn smart contract audit certificate — proof image" loading="lazy"/>
-      </a>
+      <div class="audit-proofs">
+        <a class="audit-proof" href="https://i.imgur.com/gnbdcpO.jpeg" target="_blank" rel="noopener">
+          <img class="audit-image" src="https://i.imgur.com/gnbdcpO.jpeg" alt="Audit certificate #1" loading="lazy"/>
+        </a>
+        <a class="audit-proof" href="https://i.imgur.com/pLdp05o.jpeg" target="_blank" rel="noopener">
+          <img class="audit-image" src="https://i.imgur.com/pLdp05o.jpeg" alt="Audit certificate #2" loading="lazy"/>
+        </a>
+      </div>
       <div class="audit-text">
         <h3>What this means</h3>
         <ul>
-          <li>Our contract has undergone a third‑party security review.</li>
-          <li>The image on the left is the certificate/proof provided by the auditor.</li>
-          <li>We will publish the full PDF report and verification links as soon as they are available.</li>
+          <li>Third‑party security review completed.</li>
+          <li>Full PDF and verification links will be published.</li>
+          <li>We encourage independent due diligence.</li>
         </ul>
-        <div class="whitepaper-actions">
-          <a class="btn-primary" href="https://i.imgur.com/gnbdcpO.jpeg" target="_blank" rel="noopener">View Full Image</a>
-          <a class="btn-primary" href="https://i.imgur.com/gnbdcpO.jpeg" download>Download Image</a>
+        <div class="btn-row">
+          <a class="btn-primary" href="https://i.imgur.com/gnbdcpO.jpeg" target="_blank" rel="noopener">View Image</a>
+          <a class="btn-secondary" href="https://i.imgur.com/gnbdcpO.jpeg" download>Download</a>
+                <div class="swap-hint">
         </div>
-        <p class="audit-note">Note: Screenshots and certificates are for transparency and community assurance. Always do your own research.</p>
       </div>
     </div>
   </section>
 
-
+  <!-- ABOUT -->
   <section class="about" id="about" aria-label="About SolEarn">
-    <video class="bg-video-about" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <div class="bg-grid"></div>
     <div class="about-container reveal">
       <div class="about-text">
-        <h2>ABOUT</h2>
-        <h3>What makes SolEarn special?</h3>
-        <p>Holders receive Solana rewards proportional to their holdings, automatically airdropped every 15 minutes. Low Tax Rate: A 5% transaction tax ensures tradability while funding rewards and development.</p>
+        <h2 class="section-title">About</h2>
+        <p>Holders receive Solana rewards proportional to their holdings, automatically airdropped every 15 minutes. A 5% transaction tax funds rewards and development while keeping trading smooth.</p>
         <div class="about-video">
           <video id="aboutVideo" controls playsinline preload="metadata" poster="https://i.imgur.com/QmMU6zz.png">
             <source src="https://dl.dropboxusercontent.com/scl/fi/l7jyko83xjj0m3bexvvev/IMG_0216.MP4?rlkey=f9vs0ci3ta5qe9hvsje9aa40q&st=7j3ht69s" type="video/mp4">
             Your browser does not support the video tag.
           </video>
+                <div class="swap-hint">
         </div>
       </div>
-    
-    
-
+    </div>
   </section>
 
+  <!-- TOKENOMICS -->
   <section class="tokenomics" id="tokenomics" aria-label="Tokenomics">
-    <video class="bg-video-token" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
+    <div class="bg-grid"></div>
     <h2 class="section-title">Tokenomics</h2>
-    <p class="section-subtitle">Understanding the distribution and mechanics of the SolEarn token.</p>
-    <div class="token-grid reveal"><div class="token-card">
-  <div class="token-icon"><span>%</span></div>
-  <div class="token-title">5% Tax</div>
-  <div class="token-desc">Applied on every buy, sell, and transfer transaction.</div>
-</div>
-<div class="token-card">
-  <div class="token-icon"><span>👥</span></div>
-  <div class="token-title">50% to Holders</div>
-  <div class="token-desc">Back to holders in Solana every 15 minutes, proportional to holdings.</div>
-</div>
-<div class="token-card">
-  <div class="token-icon"><span>📣</span></div>
-  <div class="token-title">50% Marketing</div>
-  <div class="token-desc">Allocated for marketing, boosts, trending and promotions.</div>
-</div>
-</section>
-  
-<section class="market" id="stats" aria-label="Live Market Stats">
-    <video class="bg-video-market" src="https://cdn.pixabay.com/download/audio/2024/07/20/audio_f6c6d9a290.mp4?filename=cosmic-dust-369887.mp3" autoplay muted loop playsinline></video>
+    <p class="section-subtitle">Distribution &amp; mechanics of SolEarn.</p>
+    <div class="token-grid reveal">
+      <div class="token-card">
+        <div class="token-icon">% </div>
+        <div class="token-title">5% Tax</div>
+        <div class="token-desc">Applied on every buy, sell, and transfer.        <div class="swap-hint">
+        </div>
+      </div>
+      <div class="token-card">
+        <div class="token-icon">👥</div>
+        <div class="token-title">50% to Holders</div>
+        <div class="token-desc">SOL airdrops every 15 minutes, proportional to holdings.        <div class="swap-hint">
+        </div>
+      </div>
+      <div class="token-card">
+        <div class="token-icon">📣</div>
+        <div class="token-title">50% Marketing</div>
+        <div class="token-desc">Boosts, trending, and promotions.        <div class="swap-hint">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE STATS -->
+  <section class="market" id="stats" aria-label="Live Market Stats">
+    <div class="bg-grid"></div>
     <h2 class="section-title">Live Stats</h2>
-    <p class="section-subtitle">Real-time data from <a href="https://dexscreener.com" target="_blank" rel="noopener">DexScreener</a> (updates every 30s).</p>
+    <p class="section-subtitle">Real‑time data from <a href="https://dexscreener.com" target="_blank" rel="noopener">DexScreener</a> (auto‑updates).</p>
     <div class="stat-grid reveal" aria-live="polite">
       <div class="stat-card">
         <div class="stat-label">Market Cap</div>
         <div class="stat-value"><span id="statMcap">—</span></div>
-        <div class="stat-delta" id="statMcapChg" data-title="24h">—</div>
+        <div class="stat-delta" id="statMcapChg" data-title="24h">—        <div class="swap-hint">
+        </div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Price</div>
         <div class="stat-value"><span id="statPrice">—</span></div>
-        <div class="stat-delta" id="statPriceChg" data-title="24h">—</div>
+        <div class="stat-delta" id="statPriceChg" data-title="24h">—        <div class="swap-hint">
+        </div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Volume</div>
         <div class="stat-value"><span id="statVol">—</span></div>
-        <div class="stat-delta" id="statVolChg" data-title="24h">—</div>
+        <div class="stat-delta" id="statVolChg" data-title="24h">—        <div class="swap-hint">
+        </div>
       </div>
     </div>
-</section>
+  </section>
 
-
-
+  <!-- TRUST -->
   <section class="trust" id="trust" aria-label="Trust & Transparency">
-    <video class="bg-video-trust" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-    <h2 class="section-title" style="text-align:center;font-family:'Montserrat',sans-serif;margin-bottom:18px">Trust & Transparency</h2>
-    <p class="section-subtitle" style="text-align:center;margin-bottom:28px">We aim to earn trust with clear commitments and public updates.</p>
+    <div class="bg-grid"></div>
+    <h2 class="section-title">Trust & Transparency</h2>
+    <p class="section-subtitle">Clear commitments and public updates.</p>
     <div class="trust-grid reveal">
-      <div class="trust-card"><div class="trust-icon">🛡️</div><div class="trust-title">Audit</div><div class="trust-desc">Independent smart-contract review.</div><span class="status done">Done</span></div>
-      <div class="trust-card"><div class="trust-icon">🔒</div><div class="trust-title">LP Locked</div><div class="trust-desc">Liquidity Will be locked after the launch to protect holders.</div><span class="status done">Done</span></div>
-      <div class="trust-card"><div class="trust-icon">🪪</div><div class="trust-title">Team KYC</div><div class="trust-desc">Team identity verification via a third-party provider.</div><span class="status planned">Planned</span></div>
-</section>
-
-  <section class="steps" id="steps" aria-label="Get Started in 3 Easy Steps">
-    <video class="bg-video-steps" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-    <h2 class="section-title">Get Started in 3 Easy Steps</h2>
-    <p class="section-subtitle">Joining the SolEarn ecosystem is simple and rewarding.</p>
-    <div class="steps-grid reveal">
-      <div class="step-item"><div class="step-badge">1</div><div class="step-title">Buy & Hold</div><div class="step-desc">Purchase $SE on your preferred DEX and hold it in your wallet.</div></div>
-      <div class="step-item"><div class="step-badge">2</div><div class="step-title">Receive Airdrops</div><div class="step-desc">Rewards auto-airdrop to your wallet every 15 minutes based on holdings.</div></div>
-      <div class="step-item"><div class="step-badge">3</div><div class="step-title">Grow Your Portfolio</div><div class="step-desc">Reinvest or hold to compound your passive income over time.</div></div>
-</section>
-
-  <section class="roadmap" id="roadmap" aria-label="Roadmap">
-  <video class="bg-video-road" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-  <h2 class="section-title">SolEarn Roadmap: Building a Revenue-Sharing Token Trilogy</h2>
-      <nav class="roadmap-index" aria-label="Roadmap index">
-        <a href="#phase1">Phase 1</a>
-        <a href="#phase2">Phase 2</a>
-        <a href="#phase3">Phase 3</a>
-        <a href="#phase4">Phase 4</a>
-        <a href="#phase5">Phase 5</a>
-      </nav>
-  <div class="roadmap-vertical">
-    <article id="phase1" class="phase reveal">
-      <h3>Phase 1: Pre-Launch and SolEarn Token Development</h3>
-      <p><strong>Objective:</strong> Establish the foundation for SolEarn, build community trust, and prepare for the initial token launch.</p>
-      <ul>
-        <li>Finalize SolEarn smart contract on the Solana blockchain, integrating the Revshare platform for revenue-sharing.</li>
-        <li>Implement 5% transaction tax: 50% redistributed to holders in Solana every 15 minutes, 50% allocated to developers for boosts, trending, and promotions.</li>
-        <li>Conduct rigorous smart contract audits by reputable third-party firms to ensure security and transparency.</li>
-        <li>Develop a user-friendly dashboard for holders to track Solana reward distributions.</li>
-        <li>Launch official website, whitepaper, and social channels (Twitter/X, Telegram, Discord).</li>
-        <li>Create an Alpha Group for holders owning ≥1% of supply (10M tokens). Target: ≥10 members.</li>
-      </ul>
-    </article>
-    <article id="phase2" class="phase reveal">
-      <h3>Phase 2: SolEarn Launch and Growth</h3>
-      <p><strong>Objective:</strong> Successfully launch SolEarn, drive adoption, and achieve a market cap of $500,000–$1,000,000 to trigger the EthEarn launch.</p>
-      <ul>
-        <li>Launch on a Solana-based DEX with sufficient liquidity and activate automated rewards (every 15 minutes).</li>
-        <li>Run paid campaigns (Twitter/X ads, crypto outlets, trending bots) and influencer collaborations.</li>
-        <li>Use developer fund (50% of tax) for aggressive marketing: DexTools trending, CG/CMC listings.</li>
-        <li>Provide regular Alpha Group updates (rewards performance, market cap progress).</li>
-        <li><strong>Milestones:</strong> Listed on ≥2 major DEXs and CoinGecko/CoinMarketCap; Alpha perks (e.g., EthEarn pre-sale access).</li>
-      </ul>
-    </article>
-    <article id="phase3" class="phase reveal">
-      <h3>Phase 3: EthEarn Launch and Loyalty Program</h3>
-      <p><strong>Objective:</strong> Launch EthEarn upon SolEarn reaching a $500,000–$1,000,000 market cap, rewarding loyal SolEarn holders and expanding the ecosystem.</p>
-      <ul>
-        <li>EthEarn mirrors tokenomics: 1,000,000,000 supply; 5% tax (50% redistributed in ETH, 50% for marketing/development).</li>
-        <li>Identify top 10 SolEarn holders (≥1% supply) who never sold; distribute 2.5M EthEarn each (total 2.5%).</li>
-        <li>Launch EthEarn with sufficient liquidity and strong marketing; integrate tracking into SolEarn dashboard.</li>
-        <li><strong>Milestones:</strong> EthEarn contract deployed & audited; loyalty bonuses distributed.</li>
-      </ul>
-    </article>
-    <article id="phase4" class="phase reveal">
-      <h3>Phase 4: BtcEarn Launch and Ecosystem Maturity</h3>
-      <p><strong>Objective:</strong> Launch BtcEarn upon EthEarn reaching a $500,000–$1,000,000 market cap, solidifying the trilogy and rewarding long-term holders across all tokens.</p>
-      <ul>
-        <li>BtcEarn tokenomics: 1,000,000,000 supply; 5% tax (50% redistributed in WBTC, 50% for marketing/development).</li>
-        <li>Loyalty: Top 10 EthEarn holders (≥1% supply) who never sold receive 2.5M BtcEarn; those also top-10 SolEarn holders receive +2.5M (total 5M).</li>
-        <li>Launch on a compatible DEX with liquidity; integrate BtcEarn tracking into the dashboard.</li>
-        <li><strong>Milestones:</strong> BtcEarn contract deployed & audited; bonuses distributed to eligible holders.</li>
-      </ul>
-    </article>
-    <article id="phase5" class="phase reveal">
-      <h3>Phase 5: Long-Term Growth and Sustainability</h3>
-      <p><strong>Objective:</strong> Ensure the longevity of the SolEarn Group ecosystem, expand use cases, and maintain community trust.</p>
-      <ul>
-        <li>Governance: Alpha Group voting on roadmap decisions.</li>
-        <li>DeFi partnerships integrating SolEarn, EthEarn, and BtcEarn.</li>
-        <li>Sustainability: burns/buybacks using developer funds; continuous audits & transparency reports.</li>
-        <li>Global adoption: pursue CEX listings (e.g., Binance, Coinbase), broaden marketing to non-crypto audiences, host meetups/virtual summits.</li>
-        <li><strong>Milestones:</strong> All three tokens listed on ≥1 major CEX; cross-token reward platform live.</li>
-      </ul>
-    </article>
-  </div>
-</section><section class="whitepaper" id="whitepaper" aria-label="Whitepaper">
-    <video class="bg-video-whitepaper" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-    <h2 class="section-title">Whitepaper</h2>
-    <p class="section-subtitle">Read SolEarn’s Official Whitepaper (v1.1 – August 2025).</p>
-
-    <div class="whitepaper-actions">
-      <a class="btn-primary" href="Official White Paper - SolEarn-1- PDF.pdf" target="_blank" rel="noopener">Open Full PDF</a>
-      <a class="btn-primary" href="Official White Paper - SolEarn-1- PDF.pdf" download>Download PDF</a>
+      <div class="trust-card">
+        <div class="trust-icon">🛡️</div>
+        <div class="trust-title">Audit</div>
+        <div class="trust-desc">Third‑party review.</div>
+        <span class="status done">Done</span>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔒</div>
+        <div class="trust-title">LP Locked</div>
+        <div class="trust-desc">Liquidity will be locked after launch.</div>
+        <span class="status done">Done</span>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🪪</div>
+        <div class="trust-title">Team KYC</div>
+        <div class="trust-desc">Identity verified via provider.</div>
+        <span class="status planned">Planned</span>
+      </div>
     </div>
+  </section>
 
+  <!-- STEPS -->
+  <section class="steps" id="steps" aria-label="Get Started in 3 Steps">
+    <div class="bg-grid"></div>
+    <h2 class="section-title">Get Started in 3 Easy Steps</h2>
+    <p class="section-subtitle">Joining SolEarn is simple and rewarding.</p>
+    <div class="steps-grid reveal">
+      <div class="step-item"><div class="step-badge">1</div><div class="step-title">Buy & Hold</div><div class="step-desc">Purchase $SE on your preferred DEX and hold it.</div></div>
+      <div class="step-item"><div class="step-badge">2</div><div class="step-title">Receive Airdrops</div><div class="step-desc">Rewards arrive every 15 minutes based on holdings.</div></div>
+      <div class="step-item"><div class="step-badge">3</div><div class="step-title">Grow</div><div class="step-desc">Compound over time.</div></div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="roadmap" id="roadmap" aria-label="Roadmap">
+    <div class="bg-grid"></div>
+    <h2 class="section-title">Roadmap</h2>
+    <nav class="roadmap-index" aria-label="Roadmap index">
+      <a href="#phase1">Phase 1</a>
+      <a href="#phase2">Phase 2</a>
+      <a href="#phase3">Phase 3</a>
+      <a href="#phase4">Phase 4</a>
+      <a href="#phase5">Phase 5</a>
+    </nav>
+    <div class="roadmap-vertical">
+      <article id="phase1" class="phase reveal">
+        <h3>Phase 1: Pre‑Launch</h3>
+        <ul><li>Finalize smart contract; website & socials live.</li><li>Audit and dashboard.</li></ul>
+      </article>
+      <article id="phase2" class="phase reveal">
+        <h3>Phase 2: Launch & Growth</h3>
+        <ul><li>Launch on DEX; campaigns and listings.</li></ul>
+      </article>
+      <article id="phase3" class="phase reveal">
+        <h3>Phase 3: EthEarn</h3>
+        <ul><li>ETH rewards; loyalty bonuses.</li></ul>
+      </article>
+      <article id="phase4" class="phase reveal">
+        <h3>Phase 4: BtcEarn</h3>
+        <ul><li>WBTC rewards; ecosystem maturity.</li></ul>
+      </article>
+      <article id="phase5" class="phase reveal">
+        <h3>Phase 5: Sustainability</h3>
+        <ul><li>Governance, partnerships, CEX listings.</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- WHITEPAPER -->
+  <section class="whitepaper" id="whitepaper" aria-label="Whitepaper">
+    <div class="bg-grid"></div>
+    <h2 class="section-title">Whitepaper</h2>
+    <p class="section-subtitle">Read SolEarn’s Official Whitepaper (v1.1 — August 2025).</p>
+    <div class="whitepaper-actions btn-row">
+      <a class="btn-primary" href="Official White Paper - SolEarn-1- PDF.pdf" target="_blank" rel="noopener">Open Full PDF</a>
+      <a class="btn-secondary" href="Official White Paper - SolEarn-1- PDF.pdf" download>Download PDF</a>
+    </div>
     <div class="pdf-embed reveal">
-      <!-- Try <embed>. If not supported, iframe. If still not, show fallback link. -->
       <embed src="Official White Paper - SolEarn-1- PDF.pdf#view=FitH" type="application/pdf" />
       <iframe title="SolEarn Whitepaper" loading="lazy" src="Official White Paper - SolEarn-1- PDF.pdf#view=FitH"></iframe>
       <p class="pdf-fallback">Your browser doesn’t support PDF previews. <a href="Official White Paper - SolEarn-1- PDF.pdf" target="_blank" rel="noopener">Click here to open it</a>.</p>
-</section>
+    </div>
+  </section>
 
-
-
+  <!-- FAQ -->
   <section class="faq" id="faq" aria-label="Frequently Asked Questions">
-    <video class="bg-video-faq" src="https://cdn.pixabay.com/video/2019/10/11/27770-365891067_large.mp4" autoplay muted loop playsinline></video>
-    <h2 class="section-title" style="text-align:center">FAQ</h2>
+    <div class="bg-grid"></div>
+    <h2 class="section-title">FAQ</h2>
     <div class="faq-wrap reveal">
-      <div class="faq-item">
-        <button class="faq-q" type="button">What is SolEarn?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
-        <div class="faq-a"><p>A revenue-sharing token on Solana that redistributes taxes to holders.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" type="button">How do rewards work every 15 minutes?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
-        <div class="faq-a"><p>Transaction taxes are periodically redistributed in SOL based on your holdings.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" type="button">What is the tax?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
-        <div class="faq-a"><p>5% on buys, sells, and transfers.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" type="button">Which wallet should I use?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
-        <div class="faq-a"><p>Any Solana wallet like Phantom. No MetaMask integration required.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" type="button">Where can I buy?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button>
-        <div class="faq-a"><p>Use the “Buy Now” button to open our Telegram for instructions.</p></div>
-      </div>
-</section>
+      <div class="faq-item"><button class="faq-q" type="button">What is SolEarn?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button><div class="faq-a"><p>A revenue‑sharing token on Solana that redistributes taxes to holders.</p></div></div>
+      <div class="faq-item"><button class="faq-q" type="button">How do rewards work every 15 minutes?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button><div class="faq-a"><p>Transaction taxes are periodically redistributed in SOL based on your holdings.</p></div></div>
+      <div class="faq-item"><button class="faq-q" type="button">What is the tax?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button><div class="faq-a"><p>5% on buys, sells, and transfers.</p></div></div>
+      <div class="faq-item"><button class="faq-q" type="button">Which wallet should I use?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button><div class="faq-a"><p>Any Solana wallet like Phantom.</p></div></div>
+      <div class="faq-item"><button class="faq-q" type="button">Where can I buy?<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg></button><div class="faq-a"><p>Use the “Buy on DexScreener” button on the homepage.</p></div></div>
+    </div>
+  </section>
 
+  <!-- FOOTER -->
   <footer class="site-footer" aria-label="Footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn mini logo" class="footer-logo"/>
-        <div class="footer-text">© 2025 SolEarn. All rights reserved.</div>
+        <img src="https://i.imgur.com/QmMU6zz.png" alt="SolEarn" class="footer-logo">
+        <span class="footer-text">© <span id="year"></span> SolEarn. All rights reserved.</span>
       </div>
       <div class="footer-socials">
-        <a href="https://x.com/solearngroup" target="_blank" rel="noopener" aria-label="SolEarn on X">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2H21L13.5 10.58 22 22h-6.5l-4.9-6.5L4.8 22H2l7.98-9.14L2 2h6.6l4.44 5.94L18.244 2zm-1.14 18h1.9L8.02 4h-1.9l10.984 16z"/></svg>
+        <a href="https://t.me/SolEarnRewards" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg viewBox="0 0 24 24"><path d="M9.04 15.59l-.37 5.26c.53 0 .76-.23 1.03-.5l2.48-2.38 5.14 3.77c.94.52 1.62.25 1.88-.87l3.41-16.01h.01c.3-1.4-.5-1.95-1.41-1.61L1.4 9.2C.04 9.73.07 10.51 1.17 10.85l5.22 1.63 12.14-7.65c.57-.34 1.09-.15.66.19"/></svg>
         </a>
-        <a href="https://t.me/+6mafnKHXiww2ZmNl" target="_blank" rel="noopener" aria-label="SolEarn on Telegram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.036 15.803l-.377 5.313c.54 0 .773-.232 1.052-.508l2.526-2.42 5.235 3.84c.96.53 1.644.252 1.905-.888l3.451-16.17c.314-1.46-.528-2.03-1.46-1.67L1.64 9.67c-1.414.548-1.392 1.336-.24 1.692l5.28 1.648L18.91 6.33c.66-.434 1.263-.195.767.24L9.036 15.803z"/></svg>
+        <a href="https://x.com/SolEarnGroup" target="_blank" rel="noopener" aria-label="X">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-4l-3 6-4-6H2l7.5 10L2 22h4l3-6 4 6h5l-8-10L18 2z"/></svg>
         </a>
       </div>
     </div>
   </footer>
 
-  <script src="app.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
